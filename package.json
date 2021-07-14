@@ -1,0 +1,37 @@
+{
+  "name": "foxfriends",
+  "version": "1.0.0",
+  "description": "UI for my notes",
+  "main": "./src/index.html",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "node src/server.js"
+  },
+  "author": "Cameron Eldridge",
+  "license": "ISC",
+  "devDependencies": {
+    "@sveltejs/vite-plugin-svelte": "^1.0.0-next.12",
+    "scattered-papers": "git+https://github.com/foxfriends/scattered-papers.git#7527165",
+    "svelte": "^3.38.3",
+    "vite": "^2.4.2"
+  },
+  "browserslist": [
+    "last 1 firefox version",
+    "last 1 chrome version"
+  ],
+  "svelte": {
+    "compiler": {
+      "css": false
+    }
+  },
+  "dependencies": {
+    "ansi-to-html": "^0.7.0",
+    "koa": "^2.13.1",
+    "koa-mount": "^4.0.0",
+    "koa-static": "^5.0.0",
+    "remark": "^13.0.0",
+    "remark-html": "^13.0.1",
+    "remark-syntax-highlight": "^0.1.3"
+  }
+}
