@@ -18,7 +18,7 @@
   const navigate = (name) => getNote(name).then(addNote(name));
   const focus = (note) => { notes = notes.slice(0, notes.indexOf(note) + 1); };
 
-  onMount(() => { navigate('software-development.md'); });
+  onMount(() => { navigate('__index.md'); });
   const detail = (f) => ({ detail }) => f(detail);
 </script>
 
