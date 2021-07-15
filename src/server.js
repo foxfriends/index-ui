@@ -40,6 +40,7 @@ const markdown = remark()
   .use(highlight, {
     highlight: (code, language) => {
       const { stdout } = spawnSync('syncat', ['-l', language], {
+        stdio: ['pipe', 'pipe', 'inherit'],
         input: code,
         encoding: 'UTF-8',
       });
