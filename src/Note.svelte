@@ -72,4 +72,10 @@
     /* a bit of a hack, because I don't want to mess with the h1 of the blog */
     margin-left: 4rem;
   }
+
+  .note :global(a[href^='./']) {
+    /* The tag links are of this form, and should be styled slightly differently */
+    text-decoration: underline;
+    text-decoration-style: dotted;
+  }
 </style>
