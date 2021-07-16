@@ -39,8 +39,8 @@
     bind:this={elements[i]}
     in:fly={{ duration: 200, y: 300 }}
     out:fly={{ duration: 200, y: 50 }}
-    style='transform: {transform[i] || 'none'}'>
-    <Note {note} on:focus on:navigate />
+    style='transform: {transform[i] || 'none'}; z-index: {i};'>
+    <Note {note} top={i === notes.length - 1} on:focus on:navigate />
   </div>
 {/each}
 

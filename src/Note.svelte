@@ -6,6 +6,8 @@
   const dispatch = createEventDispatcher();
 
   export let note;
+  export let top;
+  export let i;
 
   const findParent = (Class, element) => {
     if (!element) { return null; }
@@ -14,6 +16,7 @@
   }
 
   function click(event) {
+    console.log(event);
     const { target } = event;
     const parentAnchor = findParent(HTMLAnchorElement, target);
     if (parentAnchor) {
@@ -28,11 +31,13 @@
   }
 </script>
 
-<div class='note' on:click={click}>
+<div class:top class='note'>
   <Paper>
-    <Content>
-      {@html note.content}
-    </Content>
+    <div class:top class='content' on:click={click}>
+      <Content>
+        {@html note.content}
+      </Content>
+    </div>
   </Paper>
 </div>
 
@@ -43,6 +48,7 @@
     width: 60rem;
     font-size: 1.15rem;
     font-variant-numeric: proportional-nums;
+    max-height: 80vh;
 
     --font-sub-display: 'Vollkorn SC', sans-serif;
     --font-size-title: 1.75em;
@@ -75,14 +81,27 @@
     --Content--outer-space: 4rem;
   }
 
-  .note :global(h1) {
+  .content {
+    max-height: 80vh;
+    overflow-y: hidden;
+  }
+
+  .content.top {
+    overflow-y: auto;
+  }
+
+  .content :global(h1) {
     /* a bit of a hack, because I don't want to mess with the h1 of the blog */
     margin-left: 4rem;
   }
 
-  .note :global(a[href^='./']) {
+  .content :global(a[href^='./']) {
     /* The tag links are of this form, and should be styled slightly differently */
     text-decoration: underline;
     text-decoration-style: dotted;
+  }
+
+  .content:not(.top) :global(a[href^='./']) {
+    pointer-events: none;
   }
 </style>
