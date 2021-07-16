@@ -7,10 +7,17 @@
 
   export let note;
 
+  const findParent = (Class, element) => {
+    if (!element) { return null; }
+    if (element instanceof Class) { return element; }
+    return findParent(Class, element.parentElement);
+  }
+
   function click(event) {
     const { target } = event;
-    if (target instanceof HTMLAnchorElement) {
-      const href = target.getAttribute('href');
+    const parentAnchor = findParent(HTMLAnchorElement, target);
+    if (parentAnchor) {
+      const href = parentAnchor.getAttribute('href');
       if (href.startsWith('./') && href.endsWith('.md')) {
         event.preventDefault();
         dispatch('navigate', href.slice(2));
