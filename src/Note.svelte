@@ -81,6 +81,13 @@
     --Content--outer-space: 4rem;
   }
 
+  @media (max-width: 60rem) {
+    .note {
+      margin: 2rem auto;
+      max-width: calc(100vw - 4rem);
+    }
+  }
+
   .content {
     max-height: 80vh;
     overflow-y: hidden;
