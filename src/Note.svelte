@@ -16,7 +16,6 @@
   }
 
   function click(event) {
-    console.log(event);
     const { target } = event;
     const parentAnchor = findParent(HTMLAnchorElement, target);
     if (parentAnchor) {
