@@ -5,6 +5,7 @@ const { spawnSync } = require('child_process');
 const Koa = require('koa');
 const serve = require('koa-static');
 const mount = require('koa-mount');
+const send = require('koa-send');
 
 const remark = require('remark');
 const html = require('remark-html');
@@ -78,6 +79,7 @@ app.use(mount('/note', async (ctx, next) => {
   }
 }));
 app.use(serve(DIST_DIR));
+app.use((ctx) => send(ctx, 'index.html', { root: DIST_DIR }));
 
 app.listen(PORT);
 console.log(`Listening on ${PORT}`);
