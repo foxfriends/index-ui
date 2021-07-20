@@ -107,7 +107,8 @@
     text-decoration-style: dotted;
   }
 
-  .content:not(.top) :global(a[href^='./']) {
+  .content:not(.top) :global(a) {
+    /* Prevent clicking on links from previous pages */
     pointer-events: none;
   }
 </style>
