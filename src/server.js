@@ -13,7 +13,7 @@ const math = require('remark-math');
 const katex = require('rehype-katex');
 const stringify = require('rehype-stringify');
 const remark2rehype = require('remark-rehype');
-const html = require('remark-html');
+const raw = require('rehype-raw');
 const highlight = require('remark-syntax-highlight');
 const AtoH = require('ansi-to-html');
 
@@ -44,22 +44,25 @@ const atoh = new AtoH({
 
 const noteParser = unified()
   .use(markdown)
+  .use(math)
   .use(highlight, {
     highlight: (code, language) => {
-      const { stdout } = spawnSync('syncat', ['-l', language], {
+      const { stdout, stderr } = spawnSync('syncat', ['-l', language], {
         stdio: ['pipe', 'pipe', 'inherit'],
         input: code,
         encoding: 'UTF-8',
       });
-      return atoh
-        .toHtml(stdout)
+      if (stderr) {
+        console.warn('Running syncat failed:', stderr);
+      }
+      return (stdout ? atoh.toHtml(stdout) : code)
         .replace(/\{/g, '&#123;')
         .replace(/\}/g, '&#125;')
         .trim();
     },
   })
-  .use(math)
-  .use(remark2rehype)
+  .use(remark2rehype, { allowDangerousHtml: true })
+  .use(raw)
   .use(katex)
   .use(stringify)
 
