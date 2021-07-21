@@ -111,4 +111,6 @@
     /* Prevent clicking on links from previous pages */
     pointer-events: none;
   }
+
+  .content :global(.katex-html) { display: none; }
 </style>

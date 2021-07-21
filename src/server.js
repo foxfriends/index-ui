@@ -1,4 +1,4 @@
-const { readFile } = require('fs').promises;
+const { readFile } = require('fs/promises');
 const { isAbsolute, join } = require('path');
 const { spawnSync } = require('child_process');
 
@@ -7,7 +7,12 @@ const serve = require('koa-static');
 const mount = require('koa-mount');
 const send = require('koa-send');
 
-const remark = require('remark');
+const unified = require('unified');
+const markdown = require('remark-parse');
+const math = require('remark-math');
+const katex = require('rehype-katex');
+const stringify = require('rehype-stringify');
+const remark2rehype = require('remark-rehype');
 const html = require('remark-html');
 const highlight = require('remark-syntax-highlight');
 const AtoH = require('ansi-to-html');
@@ -37,7 +42,8 @@ const atoh = new AtoH({
   ],
 });
 
-const markdown = remark()
+const noteParser = unified()
+  .use(markdown)
   .use(highlight, {
     highlight: (code, language) => {
       const { stdout } = spawnSync('syncat', ['-l', language], {
@@ -52,7 +58,10 @@ const markdown = remark()
         .trim();
     },
   })
-  .use(html);
+  .use(math)
+  .use(remark2rehype)
+  .use(katex)
+  .use(stringify)
 
 const { DIST_DIR, NOTES_DIR, PORT = 3000 } = process.env;
 
@@ -69,7 +78,7 @@ app.use(mount('/note', async (ctx, next) => {
   if (!path.startsWith(NOTES_DIR)) { return next(); }
   try {
     const note = await readFile(path);
-    const { contents } = await markdown.process(note);
+    const { contents } = await noteParser.process(note);
     ctx.body = contents;
     ctx.type = 'text/html';
     ctx.status = 200;
