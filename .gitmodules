@@ -6,4 +6,4 @@
 	url = https://github.com/tonsky/FiraCode.git
 [submodule "vendor/Spectral"]
 	path = vendor/Spectral
-	url = https://github.com/productiontype/Spectral
+	url = https://github.com/productiontype/Spectral.git
