@@ -113,4 +113,9 @@
   }
 
   .content :global(.katex-html) { display: none; }
+  .content :global(.pintora-diagram) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 </style>

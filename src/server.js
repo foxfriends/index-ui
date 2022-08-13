@@ -1,21 +1,22 @@
-const { readFile } = require('fs/promises');
-const { isAbsolute, join } = require('path');
-const { spawnSync } = require('child_process');
+import { readFile } from 'fs/promises';
+import { normalize, isAbsolute, join } from 'path';
+import { spawnSync } from 'child_process';
 
-const Koa = require('koa');
-const serve = require('koa-static');
-const mount = require('koa-mount');
-const send = require('koa-send');
+import Koa from 'koa';
+import serve from 'koa-static';
+import mount from 'koa-mount';
+import send from 'koa-send';
 
-const unified = require('unified');
-const markdown = require('remark-parse');
-const math = require('remark-math');
-const katex = require('rehype-katex');
-const stringify = require('rehype-stringify');
-const remark2rehype = require('remark-rehype');
-const raw = require('rehype-raw');
-const highlight = require('remark-syntax-highlight');
-const AtoH = require('ansi-to-html');
+import { unified } from 'unified';
+import markdown from 'remark-parse';
+import math from 'remark-math';
+import katex from 'rehype-katex';
+import stringify from 'rehype-stringify';
+import remark2rehype from 'remark-rehype';
+import raw from 'rehype-raw';
+import highlight from 'remark-syntax-highlight';
+import pintora from './remark-pintora.js';
+import AtoH from 'ansi-to-html';
 
 const atoh = new AtoH({
   fg: 'var(--color__code--text)',
@@ -45,6 +46,7 @@ const atoh = new AtoH({
 const noteParser = unified()
   .use(markdown)
   .use(math)
+  .use(pintora)
   .use(highlight, {
     highlight: (code, language) => {
       const { stdout, stderr } = spawnSync('syncat', ['-l', language], {
@@ -64,7 +66,7 @@ const noteParser = unified()
   .use(remark2rehype, { allowDangerousHtml: true })
   .use(raw)
   .use(katex)
-  .use(stringify)
+  .use(stringify);
 
 const { DIST_DIR, NOTES_DIR, PORT = 3000 } = process.env;
 
@@ -78,11 +80,11 @@ app.use(mount('/note', async (ctx, next) => {
   const path = join(NOTES_DIR, ctx.path);
   console.log('Retrieving note', path);
   // prevent reaching above the root of NOTES_DIR
-  if (!path.startsWith(NOTES_DIR)) { return next(); }
+  if (!path.startsWith(normalize(NOTES_DIR))) { return next(); }
   try {
     const note = await readFile(path);
-    const { contents } = await noteParser.process(note);
-    ctx.body = contents;
+    const { value } = await noteParser.process(note);
+    ctx.body = value;
     ctx.type = 'text/html';
     ctx.status = 200;
   } catch (error) {
