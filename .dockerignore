@@ -1,0 +1,10 @@
+.git
+.github
+.gitignore
+.gitmodules
+.node-version
+dist
+Dockerfile
+node_modules
+public
+README.md
