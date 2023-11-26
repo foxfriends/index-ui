@@ -12,7 +12,7 @@
     return res.text();
   };
 
-  const printName = (name) => (name === '__index.md' ? '' : name.slice(0, -3));
+  const printName = (name) => (name === '__index.html' ? '' : name.slice(0, -5));
 
   const addNote = (name) => (content) => {
     const id = notes.length;
@@ -51,7 +51,7 @@
     }
   }
 
-  const page = (window.location.pathname.slice(1) || '__index') + '.md';
+  const page = (window.location.pathname.slice(1) || '__index') + '.html';
   onMount(() => { navigate(page); });
   const detail = (f) => ({ detail }) => f(detail);
 </script>

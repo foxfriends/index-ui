@@ -22,7 +22,7 @@
       const href = parentAnchor.getAttribute('href');
       if (href.startsWith('./') && href.endsWith('.md')) {
         event.preventDefault();
-        dispatch('navigate', href.slice(2));
+        dispatch('navigate', href.slice(2, -3) + ".html");
       }
     } else {
       dispatch('focus', note);
