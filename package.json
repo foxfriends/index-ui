@@ -13,7 +13,7 @@
     "@sveltejs/vite-plugin-svelte": "^6.1.0",
     "scattered-papers": "git+https://github.com/foxfriends/scattered-papers.git#e3c2e6f",
     "svelte": "^4.2.19",
-    "vite": "^7.1.5"
+    "vite": "^7.1.11"
   },
   "browserslist": [
     "last 1 firefox version",
